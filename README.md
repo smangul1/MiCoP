@@ -8,7 +8,7 @@ This will download about 8.4 GB of data, which will be uncompressed into files t
 
 ### Basic usage
 
-First, use a mapping tool that produces sam output, such as BWA. For convenience, we include a copy of BWA kit in our repository (see License Info). The setup script will also download pre-indexed NCBI databases for viruses and fungi. For info on how to use BWA, see: http://bio-bwa.sourceforge.net/bwa.shtml#13
+First, use a mapping tool that produces sam output, such as BWA mem. For convenience, we include a copy of BWA kit in our repository (see License Info). The setup script will also download pre-indexed NCBI databases for viruses and fungi. It is strongly suggested that these index files be used for BWA mem, to ensure proper profiling results. For info on how to use BWA, see: http://bio-bwa.sourceforge.net/bwa.shtml#13
 
 Then, run the compute-abundances.py tool as such:  
 python compute-abundances.py alignments.sam [--virus OR --fungi] [options]

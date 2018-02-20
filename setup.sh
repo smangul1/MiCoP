@@ -11,5 +11,5 @@ rm indices.zip
 cd ..
 
 #
-# Taken from the following under the Creative Commons License: https://stackoverflow.com/questions/48133080/how-to-download-a-google-drive-url-via-curl-or-wget 
+# Adapted from the following under the Creative Commons License: https://stackoverflow.com/questions/48133080/how-to-download-a-google-drive-url-via-curl-or-wget 
 #
