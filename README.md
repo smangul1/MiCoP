@@ -19,5 +19,5 @@ Viral data: Conceicao-Neto, N., Zeller, M., Lefrere, H., De Bruyn, P., Beller, L
 
 Fungi data: Tonge, D. P., Pashley, C. H., & Gant, T. W. (2014). Amplicon–Based Metagenomic Analysis of Mixed Fungal Samples Using Proton Release Amplicon Sequencing. *PloS one*, 9(4), e93849. https://doi.org/10.1371/journal.pone.0093849
 
-Finally, the HMP data was downloaded using the instructions in the MetaPhlAn tutorial: https://bitbucket.org/nsegata/metaphlan/wiki/MetaPhlAn\_Pipelines\_Tutorial
+Finally, the HMP data was downloaded using the instructions in the MetaPhlAn tutorial: https://bitbucket.org/nsegata/metaphlan/wiki/MetaPhlAn_Pipelines_Tutorial
 
