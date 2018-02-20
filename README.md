@@ -7,6 +7,7 @@ MiCoP (Microbial Community Profiling) is a method for high-accuracy profiling of
 The MiCoP paper is currently available on bioRxiv: https://www.biorxiv.org/content/early/2018/01/04/243188
 
 If you use MiCoP, please cite the paper. For instance:
+
 LaPierre, N., Mangul, S., Alser, M., Mandric, I., Wu, N. C., Koslicki, D., & Eskin, E. (2018). MiCoP: Microbial Community Profiling method for detecting viral and fungal organisms in metagenomic samples. *bioRxiv*, 243188.
 
 ### Setup
