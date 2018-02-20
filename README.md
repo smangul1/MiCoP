@@ -5,7 +5,7 @@
 First, use a mapping tool that produces sam output, such as BWA.
 
 Then, run the compute-abundances.py tool as such:  
-python compute-abundances.py reference-database.fa alignments.sam [options]  
+python compute-abundances.py alignments.sam [--virus OR --fungi] [options]
 
 To see options, run "python compute-abundances.py -h"
 
