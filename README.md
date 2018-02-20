@@ -1,10 +1,19 @@
 # MiCoP
 
+MiCoP (Microbial Community Profiling) is a method for high-accuracy profiling of viral and fungal metagenomic communities. MiCoP uses a mapping-based approach that produces more accurate results relative to state of the art general purpose metagenomic profiling methods, which tend to focus mostly on bacteria. This repository is set up to use BWA to map reads to the full NCBI Virus and Fungi RefSeq databases, and then filter and profile these results using the compute-abundances.py script. Usage is simple and details are provided below. For more details on MiCoP, see the paper link below.
+
+### Paper
+
+The MiCoP paper is currently available on bioRxiv: https://www.biorxiv.org/content/early/2018/01/04/243188
+
+If you use MiCoP, please cite the paper. For instance:
+LaPierre, N., Mangul, S., Alser, M., Mandric, I., Wu, N. C., Koslicki, D., & Eskin, E. (2018). MiCoP: Microbial Community Profiling method for detecting viral and fungal organisms in metagenomic samples. *bioRxiv*, 243188.
+
 ### Setup
 
 Simply run "./setup.sh".
 
-This will download about 8.4 GB of data, which will be uncompressed into files totalling about 13 GB of disk space.
+This will download about 8.4 GB of data, which will be uncompressed into files totalling about 13 GB of disk space. These are the pre-indexed NCBI Virus and Fungi databases for BWA.
 
 ### Basic usage
 
