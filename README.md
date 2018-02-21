@@ -39,7 +39,7 @@ This step should take about 5-30 minutes, depending on your network connection.
 
 MiCoP is a mapping-based method that expects output from a mapping tool in SAM format. For the mapping tool, we recommend BWA. To eliminate confusion over which databases to use, how to extract necessary information from them, which alignment tool to use, and how to use it, we have included a copy of the BWA alignment tool (see License info) and a script to run it using the settings expected by MiCoP. This script is called run-bwa.py.
 
-*Note*: Runtime for the BWA alignment step dominates the total computation time. For large reads files, this may take a wwhile.
+*Note*: Runtime for the BWA alignment step dominates the total computation time. For large reads files, this may take a while.
 
 Basic usage is very simple:
 
@@ -49,7 +49,8 @@ python run-bwa.py reads.fq [--virus OR --fungi] --output alignments.sam
 
 The reads are required, as are either --virus or --fungi, while the --output flag is optional. The default output file name is alignments.sam. If you would like to run BWA manually for more flexibility, make sure you use the -a flag, and see the following manpage for BWA: http://bio-bwa.sourceforge.net/bwa.shtml#13
 
-Details on the BWA algorithm can be found in the BWA paper:
+Details on the basic BWA algorithm can be found in the BWA paper cited below (we use BWA mem, a newer version that is unpublished):
+
 Li, H., & Durbin, R. (2009). Fast and accurate short read alignment with Burrows–Wheeler transform. Bioinformatics, 25(14), 1754-1760.
 
 ### Abundance profiling Script
