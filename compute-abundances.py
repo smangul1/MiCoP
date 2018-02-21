@@ -7,8 +7,6 @@ import time
 
 virus_info = 'data/accession2info-viral.txt'
 fungi_info = 'data/accession2info-fungi.txt'
-viral_db = 'data/viral-refseq-07Nov2017.fna'
-fungi_db = 'data/fungi-refseq-07Nov2017.fna'
 RANKS = ['superkingdom', 'phylum', 'class', 'order', 'family', 'genus', 'species', 'strain']
 arg_defaults = {'abundance_cutoff': -1, 'min_map': -1, 'max_ed': -1, 'pct_id': -1, 'read_cutoff': -1}
 fun_defaults = {'abundance_cutoff': -1, 'min_map': 100, 'max_ed': 1, 'pct_id': 0.99, 'read_cutoff': 100}
@@ -229,7 +227,7 @@ def compute_abundances(args, samfile, acc2info, clade2gi, lin2len):
 				break
 			else:
 				randnum -= ab
-			
+
 	for key in added.keys():
 		clade = acc2info[key][2]
 		clade2abs[clade] += (added[key] / lin2len[clade])

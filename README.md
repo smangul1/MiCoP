@@ -2,6 +2,18 @@
 
 MiCoP (Microbial Community Profiling) is a method for high-accuracy profiling of viral and fungal metagenomic communities. MiCoP uses a mapping-based approach that produces more accurate results relative to state of the art general purpose metagenomic profiling methods, which tend to focus mostly on bacteria. This repository is set up to use BWA to map reads to the full NCBI Virus and Fungi RefSeq databases, and then filter and profile these results using the compute-abundances.py script. Usage is simple and details are provided below. For more details on MiCoP, see the paper link below.
 
+### Synopsis
+
+```
+git clone https://github.com/smangul1/MiCoP.git
+cd MiCoP/
+./setup.sh
+python run-bwa.py reads.fq [--virus OR --fungi] --output alignments.sam
+python compute-abundances.py alignments.sam [--virus OR --fungi]
+```
+
+Where [--virus OR --fungi] means you use either the --virus flag or the --fungi flag (but not both or neither) depending on whether you want to profile viruses or fungi.
+
 ### Paper
 
 The MiCoP paper is currently available on bioRxiv: https://www.biorxiv.org/content/early/2018/01/04/243188
@@ -10,20 +22,44 @@ If you use MiCoP, please cite the paper. For instance:
 
 LaPierre, N., Mangul, S., Alser, M., Mandric, I., Wu, N. C., Koslicki, D., & Eskin, E. (2018). MiCoP: Microbial Community Profiling method for detecting viral and fungal organisms in metagenomic samples. *bioRxiv*, 243188.
 
-### Setup
+### Download and Setup MiCoP
 
-Simply run "./setup.sh".
+Simply run:
+```
+git clone https://github.com/smangul1/MiCoP.git
+cd MiCoP/
+./setup.sh
+```
 
-This will download about 8.4 GB of data, which will be uncompressed into files totalling about 13 GB of disk space. These are the pre-indexed NCBI Virus and Fungi databases for BWA.
+This will download this repository, change into the directory, and run the setup script. The setup script will download about 8.4 GB of data, which will be uncompressed into files totalling about 13 GB of disk space. These are the pre-indexed NCBI Virus and Fungi databases for BWA. It is not entirely necessary to use these specific databases, but it will greatly simplify running MiCoP and is strongly recommended.
 
-### Basic usage
+This step should take about 5-30 minutes, depending on your network connection.
 
-First, use a mapping tool that produces sam output, such as BWA mem. For convenience, we include a copy of BWA kit in our repository (see License Info). The setup script will also download pre-indexed NCBI databases for viruses and fungi. It is strongly suggested that these index files be used for BWA mem, to ensure proper profiling results. For info on how to use BWA, see: http://bio-bwa.sourceforge.net/bwa.shtml#13
+### Mapping stage
 
-Then, run the compute-abundances.py tool as such:  
+MiCoP is a mapping-based method that expects output from a mapping tool in SAM format. For the mapping tool, we recommend BWA. To eliminate confusion over which databases to use, how to extract necessary information from them, which alignment tool to use, and how to use it, we have included a copy of the BWA alignment tool (see License info) and a script to run it using the settings expected by MiCoP. This script is called run-bwa.py.
+
+Basic usage is very simple:
+
+```
+python run-bwa.py reads.fq [--virus OR --fungi] --output alignments.sam
+```
+
+The reads are required, as are either --virus or --fungi, while the --output flag is optional. The default output file name is alignments.sam. If you would like to run BWA manually for more flexibility, make sure you use the -a flag, and see the following manpage for BWA: http://bio-bwa.sourceforge.net/bwa.shtml#13
+
+### Abundance profiling Script
+
+The script for computing abundance profiling is called compute-abundance.py, and is very simple to use:
+
+```
 python compute-abundances.py alignments.sam [--virus OR --fungi] [options]
+```
 
-To see options, run "python compute-abundances.py -h"
+By default, this will output the results to abundances.txt. To change this, use the --output flag. All of the other options have to do with adjusting the filtering criteria for counting a clade as being present, and these options and their descriptions can be viewed with:
+
+```
+python compute-abundances.py -h
+```
 
 ### Simulated data
 
