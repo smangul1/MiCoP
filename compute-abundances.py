@@ -1,12 +1,9 @@
-import argparse
-import operator
-import random
-import sys
-import time
+import argparse, operator, os, random, sys, time
 
 
-virus_info = 'data/accession2info-viral.txt'
-fungi_info = 'data/accession2info-fungi.txt'
+__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+virus_info = __location__ + '/data/accession2info-viral.txt'
+fungi_info = __location__ + '/data/accession2info-fungi.txt'
 RANKS = ['superkingdom', 'phylum', 'class', 'order', 'family', 'genus', 'species', 'strain']
 arg_defaults = {'abundance_cutoff': -1, 'min_map': -1, 'max_ed': -1, 'pct_id': -1, 'read_cutoff': -1}
 fun_defaults = {'abundance_cutoff': -1, 'min_map': 100, 'max_ed': 1, 'pct_id': 0.99, 'read_cutoff': 100}
