@@ -47,11 +47,15 @@ Basic usage is very simple:
 python run-bwa.py reads.fq [--virus OR --fungi] --output alignments.sam
 ```
 
-The reads are required, as are either --virus or --fungi, while the --output flag is optional. The default output file name is alignments.sam. If you would like to run BWA manually for more flexibility, make sure you use the -a flag, and see the following manpage for BWA: http://bio-bwa.sourceforge.net/bwa.shtml#13
+The reads are required, as are either --virus or --fungi, while the --output flag is optional. The default output file name is alignments.sam. If you are using paired end reads, use the same format as above except with two reads files ("python run-bwa.py reads1.fq reads2.fq" etc). If you have a single interleaved paired ends file, use the above format and also add the "--paired" flag.
 
-Details on the basic BWA algorithm can be found in the BWA paper cited below (we use BWA mem, a newer version that is unpublished):
+If you would like to run BWA manually for more flexibility, make sure you use the -a flag, and see the following manpage for BWA: http://bio-bwa.sourceforge.net/bwa.shtml#13
+
+Details on the basic BWA algorithm can be found in the BWA paper cited below. We specifically use the BWA mem algorithm, cited below BWA.
 
 Li, H., & Durbin, R. (2009). Fast and accurate short read alignment with Burrows–Wheeler transform. Bioinformatics, 25(14), 1754-1760.
+
+Li, H. (2013). Aligning sequence reads, clone sequences and assembly contigs with BWA-MEM. arXiv preprint arXiv:1303.3997.
 
 ### Abundance profiling Script
 
@@ -71,7 +75,7 @@ python compute-abundances.py -h
 
 ### Simulated data
 
-The data used for our simulations can be found in the simulated\_data directory.
+The data used for our simulations can be found in the simulated\_data directory in a compressed format (.bz2). If you want to run BWA or the run-bwa.py wrapper script on this data, you will have to decompress it first. For instance, running "bzip2 -dk grinder-fungi-low-complexity-reads.fa.bz2" will generate the file grinder-fungi-low-complexity-reads.fa, which you can then run the scripts on. Just do "bzip2 -d" without the "k" if you only want the unpacked file and do not want to keep the original compressed file.
 
 The mock community datasets are taken from the following papers:
 
