@@ -85,6 +85,15 @@ Fungi data: Tonge, D. P., Pashley, C. H., & Gant, T. W. (2014). Amplicon–Based
 
 Finally, the HMP data was downloaded using the instructions in the MetaPhlAn tutorial: https://bitbucket.org/nsegata/metaphlan/wiki/MetaPhlAn_Pipelines_Tutorial
 
+### Raw FASTA Database Files
+
+Download links to the raw FASTA databases we used for this paper are below.
+
+Viruses: https://drive.google.com/file/d/1qQGddyD4Zkj-LaT6vLe9kP4uDCBJHH85/view?usp=sharing
+
+Fungi: https://drive.google.com/file/d/14E0G0w_gUJizYsjyLUNzd7J7frrMaeMJ/view?usp=sharing
+
+
 ### License Info
 
 For convenience, we include a version of the BWA kit in our repository. This is allowed under BWA's GPLv3 license, under the requirement that we also adopt GPLv3. We also use a code snippet in the setup script that is adapted from a Stack Overflow answer, permitted for inclusion under the Creative Commons license.
