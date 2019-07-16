@@ -116,11 +116,11 @@ def compute_abundances(args, samfile, acc2info, clade2gi, lin2len):
 	multimapped, ids2reads, read_ordering = {}, {}, []
 	lc = 0
 
-	print 'Reading sam file ' + samfile
+	print('Reading sam file ' + samfile)
 	for line in infile:
 		lc += 1
 		if lc % 1000000 == 0:
-			print 'Done reading ' + str(lc) + ' lines of sam file'
+			print('Done reading ' + str(lc) + ' lines of sam file')
 		if line.startswith('@'):
 			continue
 		splits = line.strip().split('\t')
@@ -159,28 +159,28 @@ def compute_abundances(args, samfile, acc2info, clade2gi, lin2len):
 					ids2abs[prev_tag] = prev_count
 			elif ignore == True:
 				multimapped[prev_read_num].append(prev_tag)
-	                prev_read_num = read_num
-	                prev_tag = tag
-	                prev_count = 1.0
-	                ignore = False
+			prev_read_num = read_num
+			prev_tag = tag
+			prev_count = 1.0
+			ignore = False
 	infile.close()
-	print 'Done reading sam file.'
+	print('Done reading sam file.')
 
 	if not(prev_read_num == '' or ignore == True):
 		if prev_tag not in ids2reads:
-	                ids2reads[prev_tag] = [prev_read_num]
-	        else:
-	                ids2reads[prev_tag].append(prev_read_num)
-	        if prev_tag not in ids:
-	                ids.append(prev_tag)
-	       	if prev_tag in ids2abs:
-	                ids2abs[prev_tag] += prev_count
-	       	else:
-	                ids2abs[prev_tag] = prev_count
+			ids2reads[prev_tag] = [prev_read_num]
+		else:
+			ids2reads[prev_tag].append(prev_read_num)
+		if prev_tag not in ids:
+			ids.append(prev_tag)
+		if prev_tag in ids2abs:
+			ids2abs[prev_tag] += prev_count
+		else:
+			ids2abs[prev_tag] = prev_count
 	elif ignore == True:
 		multimapped[read_num].append(prev_tag)
 
-	print 'Deleting clades with insufficient evidence...'
+	print('Deleting clades with insufficient evidence...')
 	clade2ids, del_list = {}, []
 	for taxid in ids2abs.keys():
 		clade = acc2info[taxid][2]
@@ -199,9 +199,9 @@ def compute_abundances(args, samfile, acc2info, clade2gi, lin2len):
 		for taxid in clade2ids[key]:
 			del ids2abs[taxid]
 		del clade2abs[key]
-	print 'Done deleting clades.'
+	print('Done deleting clades.')
 
-	print 'Assigning multimapped reads...'
+	print('Assigning multimapped reads...')
 	added = {}
 	for read in multimapped.keys():
 		randnum = random.random()
@@ -228,7 +228,7 @@ def compute_abundances(args, samfile, acc2info, clade2gi, lin2len):
 	for key in added.keys():
 		clade = acc2info[key][2]
 		clade2abs[clade] += (added[key] / lin2len[clade])
-	print 'Multimapped reads assigned.'
+	print('Multimapped reads assigned.')
 
 	total_ab = 0.0
 	for clade in clade2abs.keys():
@@ -256,10 +256,10 @@ def compute_abundances(args, samfile, acc2info, clade2gi, lin2len):
 def main():
 	args = set_params(parseargs())
 	if args.pct_id > 1.0 or args.pct_id < 0.0:
-		print 'Error: --pct_id must be between 0.0 and 1.0, inclusive'
+		print('Error: --pct_id must be between 0.0 and 1.0, inclusive')
 		sys.exit()
 	if (args.virus and args.fungi) or not(args.virus or args.fungi):
-		print 'Error: must specify either --virus or --fungi.'
+		print('Error: must specify either --virus or --fungi.')
 		sys.exit()
 	samfiles = []
 	if args.sam.endswith('.sam'):
@@ -279,12 +279,15 @@ def main():
 			else:
 				results[clade][-1] += res[clade][-1]
 
-	lev_res = {i:[] for i in range(len(RANKS))}
+	#lev_res = {i:[] for i in range(len(RANKS))}
+	lev_res = {}
+	for i in range(len(RANKS)):
+		lev_res[i] = []
 	for clade in results:
 		results[clade][-1] /= len(samfiles)  # average over all input files
 		lev_res[len(clade.split('|'))-1].append(results[clade])  # accumulate results by tax level
 
-	print 'Writing clade abundances...'
+	print('Writing clade abundances...')
 	with(open(args.output, 'w')) as outfile:
 		outfile.write('@@TAXID\tRANK\tTAXPATH\tTAXPATHSN\tPERCENTAGE\n')
 		for i in range(len(RANKS)):
@@ -295,7 +298,7 @@ def main():
 			for line in lines:
 				line = [str(i) for i in line]
 				outfile.write('\t'.join(line)+'\n')
-	print 'Done.'
+	print('Done.')
 
 
 if __name__ == '__main__':
