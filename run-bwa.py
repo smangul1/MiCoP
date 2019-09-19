@@ -26,15 +26,15 @@ def main():
 		print('Error: must specify one (single end) or two (paired end) reads files.')
 		sys.exit()
 
-	args.reads = ' '.join(args.reads)
+	#args.reads = ' '.join(args.reads)
 	#paired = '-p' if len(args.reads) == 1 and args.paired else ''
 
 	if args.virus:
 		#cmd = ' '.join([bwa_exec, 'mem', paired, '-a', virus_ind, args.reads])
-		cmd = [bwa_exec, 'mem', '-a', virus_ind, args.reads]
+		cmd = [bwa_exec, 'mem', '-a', virus_ind] + args.reads
 	else:  # args.fungi
 		#cmd = ' '.join([bwa_exec, 'mem', paired, '-a', fungi_ind, args.reads])
-		cmd = [bwa_exec, 'mem', '-a', fungi_ind, args.reads]
+		cmd = [bwa_exec, 'mem', '-a', fungi_ind] + args.reads
 	if len(args.reads) == 1 and args.paired:
 		cmd.append('-p')
 	with(open(args.output, 'w')) as outfile:
