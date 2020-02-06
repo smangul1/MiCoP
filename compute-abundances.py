@@ -5,33 +5,34 @@ __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file
 virus_info = __location__ + '/data/accession2info-viral.txt'
 fungi_info = __location__ + '/data/accession2info-fungi.txt'
 RANKS = ['superkingdom', 'phylum', 'class', 'order', 'family', 'genus', 'species', 'strain']
-arg_defaults = {'abundance_cutoff': -1, 'min_map': -1, 'max_ed': -1, 'pct_id': -1, 'read_cutoff': -1}
-fun_defaults = {'abundance_cutoff': -1, 'min_map': 100, 'max_ed': 1, 'pct_id': 0.99, 'read_cutoff': 100}
-vir_defaults = {'abundance_cutoff': -1, 'min_map': 0, 'max_ed': 999999, 'pct_id': 0.6, 'read_cutoff': 10}
+arg_defaults = {'min_map': -1, 'max_ed': -1, 'pct_id': -1, 'read_cutoff': -1}
+fun_defaults = {'min_map': 100, 'max_ed': 1, 'pct_id': 0.99, 'read_cutoff': 100}
+vir_defaults = {'min_map': 0, 'max_ed': 999999, 'pct_id': 0.6, 'read_cutoff': 10}
 
 
 def parseargs():    # handle user arguments
-    parser = argparse.ArgumentParser(description='Compute abundance estimations for species in a sample.')
-    parser.add_argument('sam', help='.sam file or file with list of SAM files to process. Required.')
-    parser.add_argument('--abundance_cutoff', type=float, default=-1, help='Organism abundance to count it as present.')
-    parser.add_argument('--fungi', action='store_true', help='Profile fungi.')
-    parser.add_argument('--min_map', type=int, default=-1, help='Minimum bases mapped to count a hit.')
-    parser.add_argument('--max_ed', type=int, default=-1, help='Maximum edit distance from a reference to count a hit.')
-    parser.add_argument('--normalize', type=bool, choices=[True,False], default=True,
-    					help='Normalize species abundance by genome length or not. Default: True')
-    parser.add_argument('--output', default='abundances.txt', help='Output abundances file. Default: abundances.txt')
-    #parser.add_argument('--paired', action='store_true', default=False, help='Use if reads are paired end.')
-    parser.add_argument('--pct_id', type=float, default=-1, help='Minimum percent identity from reference to count a hit.')
-    parser.add_argument('--read_cutoff', type=int, default=-1, help='Number of reads to count an organism as present.')
-    parser.add_argument('--virus', action='store_true', help='Profile viruses.')
-    args = parser.parse_args()
-    return args
+	parser = argparse.ArgumentParser(description='Compute abundance estimations for species in a sample.')
+	parser.add_argument('sam', help='.sam file or file with list of SAM files to process. Required.')
+	#parser.add_argument('--abundance_cutoff', type=float, default=-1, help='Organism abundance to count it as present.')
+	parser.add_argument('--fungi', action='store_true', help='Profile fungi.')
+	parser.add_argument('--min_map', type=int, default=-1, help='Minimum bases mapped to count a hit.')
+	parser.add_argument('--max_ed', type=int, default=-1, help='Maximum edit distance from a reference to count a hit.')
+	#parser.add_argument('--normalize', type=bool, choices=[True,False], default=True,
+	#					help='Normalize species abundance by genome length or not. Default: True')
+	parser.add_argument('--output', default='abundances.txt', help='Output abundances file. Default: abundances.txt')
+	#parser.add_argument('--paired', action='store_true', default=False, help='Use if reads are paired end.')
+	parser.add_argument('--pct_id', type=float, default=-1, help='Minimum percent identity from reference to count a hit.')
+	parser.add_argument('--raw_counts', action='store_true', help='Return raw read counts instead of relative abundances.')
+	parser.add_argument('--read_cutoff', type=int, default=-1, help='Number of reads to count an organism as present.')
+	parser.add_argument('--virus', action='store_true', help='Profile viruses.')
+	args = parser.parse_args()
+	return args
 
 
 def set_params(args):
 	if args.virus:
-		if args.abundance_cutoff == arg_defaults['abundance_cutoff']:
-			args.abundance_cutoff = vir_defaults['abundance_cutoff']
+		#if args.abundance_cutoff == arg_defaults['abundance_cutoff']:
+		#	args.abundance_cutoff = vir_defaults['abundance_cutoff']
 		if args.min_map == arg_defaults['min_map']:
 			args.min_map = vir_defaults['min_map']
 		if args.max_ed == arg_defaults['max_ed']:
@@ -41,8 +42,8 @@ def set_params(args):
 		if args.read_cutoff == arg_defaults['read_cutoff']:
 			args.read_cutoff = vir_defaults['read_cutoff']
 	else:
-		if args.abundance_cutoff == arg_defaults['abundance_cutoff']:
-			args.abundance_cutoff = fun_defaults['abundance_cutoff']
+		#if args.abundance_cutoff == arg_defaults['abundance_cutoff']:
+		#	args.abundance_cutoff = fun_defaults['abundance_cutoff']
 		if args.min_map == arg_defaults['min_map']:
 			args.min_map = fun_defaults['min_map']
 		if args.max_ed == arg_defaults['max_ed']:
@@ -193,7 +194,7 @@ def compute_abundances(args, samfile, acc2info, clade2gi, lin2len):
 	for clade in clade2abs.keys():
 		if clade2abs[clade] < args.read_cutoff:
 			del_list.append(clade)  # mark for deletion due to insufficient evidence
-		else:
+		elif not args.raw_counts:
 			clade2abs[clade] /= lin2len[clade]  # normalize
 	for key in del_list:
 		for taxid in clade2ids[key]:
@@ -227,20 +228,23 @@ def compute_abundances(args, samfile, acc2info, clade2gi, lin2len):
 
 	for key in added.keys():
 		clade = acc2info[key][2]
-		clade2abs[clade] += (added[key] / lin2len[clade])
+		if args.raw_counts:
+			clade2abs[clade] += added[key]
+		else:
+			clade2abs[clade] += (added[key] / lin2len[clade])
 	print('Multimapped reads assigned.')
 
-	total_ab = 0.0
-	for clade in clade2abs.keys():
-		total_ab += clade2abs[clade]
-
-	for clade in clade2abs.keys():
-		clade2abs[clade] = clade2abs[clade] * 100.0 / total_ab  # normalize abundances
+	if not args.raw_counts:
+		total_ab = 0.0
+		for clade in clade2abs.keys():
+			total_ab += clade2abs[clade]
+		for clade in clade2abs.keys():
+			clade2abs[clade] = clade2abs[clade] * 100.0 / total_ab  # normalize abundances
 
 	results = {}  # holds results for cami format
 	for clade in clade2abs:
 		all_taxa = clade.split('|')
-		all_gi = [clade2gi[i] if i in clade2gi else '?' for i in all_taxa]
+		all_gi = [clade2gi[i] if i in clade2gi else '' for i in all_taxa]
 		results[clade] = [all_gi[-1], 'strain', '|'.join(all_gi), clade, clade2abs[clade]]
 
 		all_levels = ['|'.join(all_taxa[:i]) for i in range(1, 1+len(all_taxa))]
@@ -289,13 +293,19 @@ def main():
 
 	print('Writing clade abundances...')
 	with(open(args.output, 'w')) as outfile:
-		outfile.write('@@TAXID\tRANK\tTAXPATH\tTAXPATHSN\tPERCENTAGE\n')
+		if args.raw_counts:
+			outfile.write('@@TAXID\tRANK\tTAXPATH\tTAXPATHSN\tREAD_COUNT\n')
+		else:
+			outfile.write('@@TAXID\tRANK\tTAXPATH\tTAXPATHSN\tPERCENTAGE\n')
 		for i in range(len(RANKS)):
 			lines = lev_res[i]
-			lines.sort(key=lambda x: 100.0-x[-1])
+			if not args.raw_counts:
+				lines.sort(key=lambda x: 100.0-x[-1])
 			if lines == None or len(lines) < 1:
 				continue
 			for line in lines:
+				if args.raw_counts:
+					line[-1] = int(line[-1])
 				line = [str(i) for i in line]
 				outfile.write('\t'.join(line)+'\n')
 	print('Done.')
