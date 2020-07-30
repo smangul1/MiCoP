@@ -13,6 +13,7 @@ def parseargs():    # handle user arguments
 	parser.add_argument('--virus', action='store_true', help='Run BWA on viruses. This or --fungi required.')
 	parser.add_argument('--output', default='alignments.sam', help='Where to output BWA results to.')
 	parser.add_argument('--paired', action='store_true', help='Treat input reads file as interleaved paired end reads.')
+        parser.add_argument('--threads', default='4', help='Number of threads to run bwa mem with (integer, default 4')
 	args = parser.parse_args()
 	return args
 
@@ -31,10 +32,10 @@ def main():
 
 	if args.virus:
 		#cmd = ' '.join([bwa_exec, 'mem', paired, '-a', virus_ind, args.reads])
-		cmd = [bwa_exec, 'mem', '-a', virus_ind] + args.reads
+                cmd = [bwa_exec, 'mem', '-a', virus_ind, '-t', args.threads] + args.reads
 	else:  # args.fungi
 		#cmd = ' '.join([bwa_exec, 'mem', paired, '-a', fungi_ind, args.reads])
-		cmd = [bwa_exec, 'mem', '-a', fungi_ind] + args.reads
+		cmd = [bwa_exec, 'mem', '-a', fungi_ind, '-t', args.threads] + args.reads
 	if len(args.reads) == 1 and args.paired:
 		cmd.append('-p')
 	with(open(args.output, 'w')) as outfile:
