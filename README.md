@@ -16,11 +16,11 @@ Where [--virus OR --fungi] means you use either the --virus flag or the --fungi 
 
 ### Paper
 
-The MiCoP paper is currently available on bioRxiv: https://www.biorxiv.org/content/early/2018/01/04/243188
+The MiCoP manuscript is available online at: https://doi.org/10.1186/s12864-019-5699-9
 
 If you use MiCoP, please cite the paper. For instance:
 
-LaPierre, N., Mangul, S., Alser, M., Mandric, I., Wu, N. C., Koslicki, D., & Eskin, E. (2018). MiCoP: Microbial Community Profiling method for detecting viral and fungal organisms in metagenomic samples. *bioRxiv*, 243188.
+LaPierre, N., Mangul, S., Alser, M. et al. MiCoP: microbial community profiling method for detecting viral and fungal organisms in metagenomic samples. BMC Genomics 20, 423 (2019). https://doi.org/10.1186/s12864-019-5699-9
 
 ### Download and Setup MiCoP
 
